@@ -30,3 +30,15 @@ function operate(operator, num1, num2) {
 let num1;
 let num2;
 let operator;
+let display = "";
+
+function updateDisplay() {
+  document.querySelector(".display").textContent = display;
+}
+
+document.querySelectorAll(".number").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    display += btn.textContent;
+    updateDisplay();
+  });
+});
