@@ -29,7 +29,7 @@ function operate(num1, num2, operator) {
 
 let isNum1 = true;
 let allowNum = true;
-// let allowNeg = true;
+let allowNeg = true;
 let allowOp = false;
 let allowEq = false;
 let num1 = "";
@@ -48,18 +48,28 @@ document.querySelectorAll(".number").forEach((btn) => {
     if (allowNum) {
       if (isNum1) {
         num1 += input;
-        allowOp = true;
       } else {
         num2 += input;
-        allowOp = true;
         allowEq = true;
       }
+      allowNeg = false;
+      allowOp = true;
       updateDisplay();
     }
   });
 });
 
-document.querySelector(".negative").addEventListener("click", () => {});
+document.querySelector(".negative").addEventListener("click", () => {
+  if (allowNeg) {
+    if (isNum1) {
+      num1 += "-";
+    } else {
+      num2 += "-";
+    }
+    allowNeg = false;
+    updateDisplay();
+  }
+});
 
 document.querySelectorAll(".operator").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -72,6 +82,7 @@ document.querySelectorAll(".operator").forEach((btn) => {
         isNum1 = false;
         allowNum = true;
       }
+      allowNeg = true;
       allowOp = false;
       allowEq = false;
       operator = input;
@@ -95,7 +106,7 @@ document.querySelector(".equals").addEventListener("click", () => {
 document.querySelector(".clear").addEventListener("click", () => {
   isNum1 = true;
   allowNum = true;
-  // allowNeg = true;
+  allowNeg = true;
   allowOp = false;
   allowEq = false;
   num1 = "";
@@ -104,7 +115,7 @@ document.querySelector(".clear").addEventListener("click", () => {
   updateDisplay();
 });
 
-// testing
+// debug logging
 document.querySelectorAll("button").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     const clickedOn = e.target.textContent;
@@ -112,7 +123,7 @@ document.querySelectorAll("button").forEach((btn) => {
       clickedOn,
       isNum1,
       allowNum,
-      // allowNeg,
+      allowNeg,
       allowOp,
       allowEq,
       num1,
