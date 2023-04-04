@@ -1,3 +1,13 @@
+let isNum1 = true;
+let allowNum = true;
+let allowNeg = true;
+let allowOp = false;
+let allowEq = false;
+let num1 = "";
+let num2 = "";
+let operator = "";
+let display = "";
+
 function add(a, b) {
   return a + b;
 }
@@ -17,29 +27,30 @@ function divide(a, b) {
 function operate(num1, num2, operator) {
   switch (operator) {
     case "+":
-      return +(add(Number(num1), Number(num2))).toFixed(3);
+      return +add(Number(num1), Number(num2)).toFixed(3);
     case "−":
-      return +(subtract(Number(num1), Number(num2))).toFixed(3);
+      return +subtract(Number(num1), Number(num2)).toFixed(3);
     case "×":
-      return +(multiply(Number(num1), Number(num2))).toFixed(3);
+      return +multiply(Number(num1), Number(num2)).toFixed(3);
     case "÷":
-      return +(divide(Number(num1), Number(num2))).toFixed(3);
+      return +divide(Number(num1), Number(num2)).toFixed(3);
   }
 }
-
-let isNum1 = true;
-let allowNum = true;
-let allowNeg = true;
-let allowOp = false;
-let allowEq = false;
-let num1 = "";
-let num2 = "";
-let operator = "";
-let display = "";
 
 function updateDisplay() {
   display = num1 + operator + num2;
   document.querySelector(".display").textContent = display;
+}
+
+function divisionByZero() {
+  allowNum = false;
+  allowNeg = false;
+  allowOp = false;
+  allowEq = false;
+  num1 = "Can't divide by 0";
+  num2 = "";
+  operator = "";
+  updateDisplay();
 }
 
 document.querySelectorAll(".number").forEach((btn) => {
@@ -76,8 +87,13 @@ document.querySelectorAll(".operator").forEach((btn) => {
     const input = btn.textContent;
     if (allowOp) {
       if (!isNum1) {
-        num1 = operate(num1, num2, operator);
-        num2 = "";
+        if (operator === "÷" && num2 == 0) {
+          divisionByZero();
+          return;
+        } else {
+          num1 = operate(num1, num2, operator);
+          num2 = "";
+        }
       } else {
         isNum1 = false;
         allowNum = true;
@@ -93,13 +109,18 @@ document.querySelectorAll(".operator").forEach((btn) => {
 
 document.querySelector(".equals").addEventListener("click", () => {
   if (allowEq) {
-    isNum1 = true;
-    allowNum = false;
-    allowEq = false;
-    num1 = operate(num1, num2, operator);
-    num2 = "";
-    operator = "";
-    updateDisplay();
+    if (operator === "÷" && num2 == 0) {
+      divisionByZero();
+      return;
+    } else {
+      isNum1 = true;
+      allowNum = false;
+      allowEq = false;
+      num1 = operate(num1, num2, operator);
+      num2 = "";
+      operator = "";
+      updateDisplay();
+    }
   }
 });
 
