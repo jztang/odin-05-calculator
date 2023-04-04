@@ -14,31 +14,111 @@ function divide(a, b) {
   return a / b;
 }
 
-function operate(operator, num1, num2) {
+function operate(num1, num2, operator) {
   switch (operator) {
     case "+":
-      return add(num1, num2);
+      return add(Number(num1), Number(num2));
     case "−":
-      return subtract(num1, num2);
+      return subtract(Number(num1), Number(num2));
     case "×":
-      return multiply(num1, num2);
+      return multiply(Number(num1), Number(num2));
     case "÷":
-      return divide(num1, num2);
+      return divide(Number(num1), Number(num2));
   }
 }
 
-let num1;
-let num2;
-let operator;
+let isNum1 = true;
+let allowNum = true;
+// let allowNeg = true;
+let allowOp = false;
+let allowEq = false;
+let num1 = "";
+let num2 = "";
+let operator = "";
 let display = "";
 
 function updateDisplay() {
+  display = num1 + operator + num2;
   document.querySelector(".display").textContent = display;
 }
 
 document.querySelectorAll(".number").forEach((btn) => {
   btn.addEventListener("click", () => {
-    display += btn.textContent;
+    const input = btn.textContent;
+    if (allowNum) {
+      if (isNum1) {
+        num1 += input;
+        allowOp = true;
+      } else {
+        num2 += input;
+        allowOp = true;
+        allowEq = true;
+      }
+      updateDisplay();
+    }
+  });
+});
+
+document.querySelector(".negative").addEventListener("click", () => {});
+
+document.querySelectorAll(".operator").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const input = btn.textContent;
+    if (allowOp) {
+      if (!isNum1) {
+        num1 = operate(num1, num2, operator);
+        num2 = "";
+      } else {
+        isNum1 = false;
+        allowNum = true;
+      }
+      allowOp = false;
+      allowEq = false;
+      operator = input;
+      updateDisplay();
+    }
+  });
+});
+
+document.querySelector(".equals").addEventListener("click", () => {
+  if (allowEq) {
+    isNum1 = true;
+    allowNum = false;
+    allowEq = false;
+    num1 = operate(num1, num2, operator);
+    num2 = "";
+    operator = "";
     updateDisplay();
+  }
+});
+
+document.querySelector(".clear").addEventListener("click", () => {
+  isNum1 = true;
+  allowNum = true;
+  // allowNeg = true;
+  allowOp = false;
+  allowEq = false;
+  num1 = "";
+  num2 = "";
+  operator = "";
+  updateDisplay();
+});
+
+// testing
+document.querySelectorAll("button").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const clickedOn = e.target.textContent;
+    console.table({
+      clickedOn,
+      isNum1,
+      allowNum,
+      // allowNeg,
+      allowOp,
+      allowEq,
+      num1,
+      num2,
+      operator,
+      display,
+    });
   });
 });
