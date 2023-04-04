@@ -17,13 +17,13 @@ function divide(a, b) {
 function operate(num1, num2, operator) {
   switch (operator) {
     case "+":
-      return add(Number(num1), Number(num2));
+      return +(add(Number(num1), Number(num2))).toFixed(3);
     case "−":
-      return subtract(Number(num1), Number(num2));
+      return +(subtract(Number(num1), Number(num2))).toFixed(3);
     case "×":
-      return multiply(Number(num1), Number(num2));
+      return +(multiply(Number(num1), Number(num2))).toFixed(3);
     case "÷":
-      return divide(Number(num1), Number(num2));
+      return +(divide(Number(num1), Number(num2))).toFixed(3);
   }
 }
 
